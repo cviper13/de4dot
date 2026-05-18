@@ -1,4 +1,4 @@
-name: GitHub CI
+name: GitHub CIS
 on:
   push:
     branches:
@@ -26,7 +26,7 @@ jobs:
 
       - name: Upload Build Artifacts
         if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: de4dot-artifacts
           path: |
