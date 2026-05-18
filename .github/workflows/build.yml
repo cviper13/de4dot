@@ -1,4 +1,4 @@
-name: GitHub CIS
+name: GitHub CI
 on:
   push:
     branches:
@@ -15,7 +15,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
 
       - name: Build
         shell: pwsh
@@ -24,26 +24,13 @@ jobs:
           $env:PATH = $msbuildPath + ';' + $env:PATH
           .\build.ps1
 
-      - uses: actions/upload-artifact@v1
+      - name: Upload Build Artifacts
         if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-artifact@v2
         with:
-          name: de4dot-net35
-          path: Release/net35
-
-      - uses: actions/upload-artifact@v1
-        if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
-        with:
-          name: de4dot-net45
-          path: Release/net45
-
-      - uses: actions/upload-artifact@v1
-        if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
-        with:
-          name: de4dot-netcoreapp2.1
-          path: publish-netcoreapp2.1
-
-      - uses: actions/upload-artifact@v1
-        if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
-        with:
-          name: de4dot-netcoreapp3.1
-          path: publish-netcoreapp3.1
+          name: de4dot-artifacts
+          path: |
+            Release/net35
+            Release/net45
+            publish-netcoreapp2.1
+            publish-netcoreapp3.1
